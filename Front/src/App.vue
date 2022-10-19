@@ -2,11 +2,13 @@
   <Loading v-if="testLoading() === true"/>
   <p v-if="error !== null" class="text-dark">{{ error }}</p>
   <router-view/>
+  <ModalMessage/>
 </template>
 
 <script setup>
 // composants
 import Loading from '@/components/Loading.vue'
+import ModalMessage from '@/components/ModalMessage.vue'
 
 // store
 import {storeToRefs} from 'pinia'
@@ -46,7 +48,6 @@ function testLoading() {
   }
 }
 
-// this.$route.params
 </script>
 
 <style>

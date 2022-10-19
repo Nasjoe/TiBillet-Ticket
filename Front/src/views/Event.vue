@@ -1,42 +1,42 @@
 <template>
-    <!-- info getEventHeader en tant qu'action () est contractuel, le getter donne des données antérieures -->
-    <!-- <Header :data-header="getEventHeader()"/> -->
+  <!-- info getEventHeader en tant qu'action () est contractuel, le getter donne des données antérieures -->
+  <!-- <Header :data-header="getEventHeader()"/> -->
 
-    <div v-if="Object.entries(event).length > 0" class="container mt-5">
+  <div v-if="Object.entries(event).length > 0" class="container mt-5">
 
-      <!-- artistes -->
-      <div v-for="(artist, index) in event.artists" :key="index">
-        <CardArtist :data-artist="artist" class="mb-6"/>
-      </div>
-
-       <div class="container">
-        <p>
-        </p>
-       </div>
-
-      <form @submit.prevent="validerAchats($event)" class="needs-validation" novalidate>
-        <!--
-        Billet(s)
-        Si attribut "image", une image est affiché à la place du nom
-        Attribut 'style-image' gère les propriétées(css) de l'image (pas obligaoire, style par défaut)
-         -->
-        <CardBillet :image="true" :style-image="{height: '30px',width: 'auto'}"/>
-
-        <CardOptions/>
-
-        <CardEmail/>
-
-        <!--
-        Don(s):
-        les dons sont désactivés par défaut
-        l'attribut enable-names permet d'activer une liste de don par son nom (attention: nom unique !!)
-        -->
-        <!-- <CardGifts :enable-names="['Don']"/> -->
-
-        <button type="submit" class="btn bg-gradient-dark w-100">Valider la réservation</button>
-      </form>
-
+    <!-- artistes -->
+    <div v-for="(artist, index) in event.artists" :key="index">
+      <CardArtist :data-artist="artist" class="mb-6"/>
     </div>
+
+    <div class="container">
+      <p>
+      </p>
+    </div>
+
+    <form @submit.prevent="validerAchats($event)" class="needs-validation" novalidate>
+      <!--
+      Billet(s)
+      Si attribut "image", une image est affiché à la place du nom
+      Attribut 'style-image' gère les propriétées(css) de l'image (pas obligaoire, style par défaut)
+       -->
+      <CardBillet :image="true" :style-image="{height: '30px',width: 'auto'}"/>
+
+      <CardOptions/>
+
+      <CardEmail/>
+
+      <!--
+      Don(s):
+      les dons sont désactivés par défaut
+      l'attribut enable-names permet d'activer une liste de don par son nom (attention: nom unique !!)
+      -->
+      <CardGifts :enable-names="['Don']"/>
+
+      <button type="submit" class="btn bg-gradient-dark w-100">Valider la réservation</button>
+    </form>
+
+  </div>
 </template>
 
 <script setup>
@@ -71,10 +71,8 @@ const {adhesion, loading, error} = storeToRefs(useAllStore())
 const route = useRoute()
 const slug = route.params.slug
 
-// const emit = defineEmits(['update:layout'])
-
 // load event
-getEventBySlug(slug)
+getEventBySlug(slug, route.query.email)
 
 // formatage des données POST events
 function formatBodyPost() {

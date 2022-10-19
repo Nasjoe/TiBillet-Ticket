@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
-import {useLocalStore} from '@/stores/local'
 import {useAllStore} from '@/stores/all'
+import {useRoute} from 'vue-router'
 
 const domain = `${location.protocol}//${location.host}`
 
@@ -13,7 +13,7 @@ export const useEventStore = defineStore({
     error: null
   }),
   actions: {
-    async getEventBySlug(slug) {
+    async getEventBySlug(slug, email) {
       const urlApi = `/api/eventslug/${slug}`
       this.error = null
       this.event = {}
@@ -33,7 +33,7 @@ export const useEventStore = defineStore({
           }
         }
         this.event = retour
-        this.initEventForm()
+        this.initEventForm(email)
         // updata data header
         this.getEventHeader()
 
@@ -49,7 +49,7 @@ export const useEventStore = defineStore({
       }
     },
     // init le formulaire d'un évènement (CardBillet, CardOptions)
-    initEventForm() {
+    initEventForm(email) {
       // console.log('-> action initEventForm !')
       const allStore = useAllStore()
       // init data form / event uuid
@@ -60,8 +60,10 @@ export const useEventStore = defineStore({
           name: this.event.name,
           initDate: new Date().toLocaleString(),
           event: this.event.uuid,
-          email: allStore.adhesAllmail, // pas d'observeur/proxy
-          emailConfirme: allStore.adhesAllmail,
+          // email: allStore.adhesAllmail, // pas d'observeur/proxy
+          // emailConfirme: allStore.adhesAllmail,
+          email: email,
+          emailConfirme: email,
           options_radio: this.event.options_radio,
           options_checkbox: this.event.options_checkbox,
           prices: []
