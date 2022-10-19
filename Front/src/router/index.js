@@ -1,6 +1,5 @@
 // gère les routes(pages)
 import {createRouter, createWebHistory} from 'vue-router'
-import Accueil from '../views/Accueil.vue'
 
 // store
 import {useLocalStore} from '@/stores/local'
@@ -9,23 +8,6 @@ import {useAllStore} from '@/stores/all'
 const domain = `${location.protocol}//${location.host}`
 
 const routes = [
-  {
-    // 404, route interceptée
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: {}
-  },
-  {
-    path: '/',
-    name: 'Accueil',
-    component: Accueil
-  },
-  {
-    // route interceptée
-    path: '/emailconfirmation/:id/:token',
-    name: 'EmailConfirmation',
-    component: {}
-  },
   {
     path: '/event/:slug',
     name: 'Event',
@@ -39,33 +21,6 @@ const routes = [
       await loadEventBySlug(to.params.slug)
     }
      */
-  },
-  {
-    path: '/artist/:slug',
-    name: 'Artist',
-    component: () => import(/* webpackChunkName: "Artist" */ '../views/ArtistPage.vue')
-  },
-  {
-    path: '/adhesions/',
-    name: 'Adhesions',
-    component: () => import(/* webpackChunkName: "Artist" */ '@/views/Adhesions.vue')
-  },
-  {
-    // route interceptée
-    path: '/stripe/return/:id',
-    name: 'StripeReturn',
-    component: {}
-  },
-  {
-    // route interceptée
-    path: '/emailconfirmation/:id/:token',
-    name: 'EmailConfirmation',
-    component: {}
-  },
-  {
-    path: '/status',
-    name: 'StatusPlace',
-    component: () => import(/* webpackChunkName: "StatusPlace" */ '../views/StatusPlace.vue')
   }
 ]
 
