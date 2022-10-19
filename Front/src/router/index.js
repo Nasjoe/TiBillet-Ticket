@@ -8,6 +8,18 @@ import {useAllStore} from '@/stores/all'
 const domain = `${location.protocol}//${location.host}`
 
 const routes = [
+   {
+    // 404, route interceptée
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: {}
+  },
+  {
+    // route interceptée
+    path: '/stripe/return/:id',
+    name: 'StripeReturn',
+    component: {}
+  },
   {
     path: '/event/:slug',
     name: 'Event',
@@ -51,24 +63,6 @@ router.beforeEach((to, from, next) => {
     // window.location = "https://wiki.tibillet.re/"
   }
 
-  // intercepte la route "EmailConfirmation" et active l'email
-  if (to.name === "EmailConfirmation") {
-    console.log(`-> Interception de la route "EmailConfirmation" et activation de l'email !`)
-    const id = to.params.id
-    const token = to.params.token
-    console.log('id =', id, '  --  token =', token)
-    if (id !== undefined && token !== undefined) {
-      const {emailActivation} = useLocalStore()
-      emailActivation(id, token)
-    } else {
-      emitter.emit('message', {
-        tmp: 6,
-        typeMsg: 'danger',
-        contenu: `Confirmation email, erreur: id et/ou token indéfinis !`
-      })
-    }
-    redirection = true
-  }
 
   // intercepte retour de stripe
   if (to.name === "StripeReturn") {
