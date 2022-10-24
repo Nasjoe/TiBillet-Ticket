@@ -1,5 +1,6 @@
 // store
 import {useAllStore} from '@/stores/all'
+import {useLocalStore} from '@/stores/local'
 
 // gère les routes(pages)
 import {createRouter, createWebHistory} from 'vue-router'
@@ -123,9 +124,9 @@ router.beforeEach((to, from, next) => {
 
   // intercepte retour de stripe
   if (to.name === "StripeReturn") {
-    // console.log('--------------------------------------------------------------------------------------------------')
-    // console.log('Interception "StripeReturn" !')
-    // console.log('to =', to)
+    console.log('--------------------------------------------------------------------------------------------------')
+    console.log('Interception "StripeReturn" !')
+    console.log('to =', to)
     const uuidStripe = to.params.id
     // console.log('uuidStripe =', uuidStripe)
     if (uuidStripe !== undefined) {
