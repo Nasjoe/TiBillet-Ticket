@@ -4,7 +4,6 @@ import vue from '@vitejs/plugin-vue'
 import {resolve} from 'path'
 
 let urlLieu = 'http://raffinerie.django-local.org:8002'
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
@@ -25,14 +24,6 @@ export default defineConfig({
     proxy: {
       '/api': urlLieu,
       '/media': urlLieu
-    },
-    hmr: {
-      protocol: 'wss',
-      port: 443
-    },
-    watch: {
-      usePolling: true
     }
-
   }
 })
