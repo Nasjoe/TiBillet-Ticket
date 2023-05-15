@@ -173,10 +173,10 @@ import { useAllStore } from '@/stores/all'
 import { useLocalStore } from '@/stores/local'
 
 // routes
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 // obtenir data adhesion
-const { place, adhesion, loading, error } = storeToRefs(useAllStore())
+const { adhesion, loading } = storeToRefs(useAllStore())
 const { getPricesAdhesion, getPartialDataAdhesion } = useAllStore()
 
 // stockage adhesion en local
