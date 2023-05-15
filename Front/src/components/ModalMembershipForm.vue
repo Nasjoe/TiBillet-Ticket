@@ -173,7 +173,7 @@ import { useAllStore } from '@/stores/all'
 import { useLocalStore } from '@/stores/local'
 
 // routes
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 // obtenir data adhesion
 const { place, adhesion, loading, error } = storeToRefs(useAllStore())
@@ -182,6 +182,8 @@ const { getPricesAdhesion, getPartialDataAdhesion } = useAllStore()
 // stockage adhesion en local
 let { setEtapeStripe } = useLocalStore()
 const router = useRouter()
+const route = useRoute()
+
 
 const props = defineProps({
   productUuid: String
@@ -228,9 +230,21 @@ function postAdhesionModal (data) {
     }
     return response.json()
   }).then(retour => {
+    loading.value = false
+
+    // active "l'étape stripe"
+    if (route.path.indexOf('embed') !== -1) {
+      // reste sur l'event
+      setEtapeStripe({nextPath: route.path})
+    } else {
+      // va à l'accueil
+      setEtapeStripe({ nextPath: '/'})
+    }
+
     // redirection stripe formulaire paiement
     window.location = retour.checkout_url
   }).catch(function (error) {
+    loading.value = false
     console.log('error =', error)
     const modalForm = document.querySelector(`#modal-form-adhesion form`).getBoundingClientRect()
     modal.value = {

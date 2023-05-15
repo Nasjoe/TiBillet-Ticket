@@ -51,6 +51,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "Adhesions" */ '@/views/Adhesions.vue')
   },
   {
+    path: '/adhesions/embed',
+    name: 'AdhesionsEmbed',
+    component: () => import(/* webpackChunkName: "Adhesions" */ '@/views/Adhesions.vue')
+  },
+  {
     // route interceptée
     path: '/stripe/return/:id',
     name: 'StripeReturn',
@@ -98,7 +103,9 @@ router.beforeEach((to, from, next) => {
   // par défaut le header et la navbar son affiché
   const {setIdentitySite} = useAllStore()
   setIdentitySite(true)
-  if (to.name === "EventEmbed") {
+
+  // pour un passage en mode iframe (sans header et navbar)
+  if (to.path.indexOf('/embed') !== -1) {
     setIdentitySite(false)
   }
 

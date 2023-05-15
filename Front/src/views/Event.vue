@@ -67,6 +67,7 @@ const {updateEmail, getEventBySlug} = useEventStore()
 let {setEtapeStripe} = useLocalStore()
 
 const {setIdentitySite} = useAllStore()
+
 // state "all" for loading components
 const {adhesion, loading, error} = storeToRefs(useAllStore())
 
@@ -222,7 +223,6 @@ function validerAchats(domEvent) {
               // va à l'accueil
               setEtapeStripe({formEventUuid: event.value.uuid, nextPath: '/'})
             }
-
 
             // paiement, redirection vers stripe
             window.location.assign(response.checkout_url)
