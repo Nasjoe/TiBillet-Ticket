@@ -181,7 +181,6 @@ const { getPricesAdhesion, getPartialDataAdhesion } = useAllStore()
 
 // stockage adhesion en local
 let { setEtapeStripe } = useLocalStore()
-const router = useRouter()
 const route = useRoute()
 
 
