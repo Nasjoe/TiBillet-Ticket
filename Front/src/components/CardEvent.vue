@@ -3,57 +3,52 @@
   <div class="card test-card-event">
     <div class="card-header p-0 position-relative z-index-1">
       <a class="d-block">
-        <img
-            class="img-fluid shadow border-radius-lg"
-            :src="event.img_variations.crop"
-            loading="lazy"
-            alt="Image de l'évènement !"/>
+        <img class="img-fluid shadow border-radius-lg" :src="event.img_variations.crop" loading="lazy"
+             alt="Image de l'évènement !"/>
       </a>
     </div>
 
     <div class="card-body">
-
-      <span
-          class="card-title mt-3 h5 d-block text-dark">
-        {{ event.name }}
-      </span>
+      <span class="card-title mt-3 h5 d-block text-dark">{{ event.name }}</span>
 
       <p class="text-dark">
         {{ formateDate(event.datetime) }}
-
         <span class="text-primary text-uppercase text-sm font-weight-bold">
         <span v-for="(produit, index) in event.products" :key="index">
           <span v-if="produit.categorie_article === 'B'">
-            <span v-for="price in produit.prices" :key="produit.uuid">
-              - {{ price.prix }}€
-            </span>
+            <span v-for="price in produit.prices" :key="produit.uuid">- {{ price.prix }}€</span>
           </span>
           <span v-if="produit.categorie_article === 'F'">
-            <span v-for="price in produit.prices" :key="produit.uuid">
-              - ENTRÉE LIBRE
-            </span>
+            <span v-for="price in produit.prices" :key="produit.uuid">- ENTRÉE LIBRE</span>
           </span>
         </span>
       </span>
       </p>
 
-      <p class="card-description mb-4"
-         v-if="event.short_description !== null">
-        {{ event.short_description }}
-      </p>
-      <p class="card-description mb-4"
-         v-if="event.short_description === null && event.artists[0] !== undefined">
+      <p class="card-description mb-4" v-if="event.short_description !== null">{{ event.short_description }}</p>
+      <p class="card-description mb-4" v-if="event.short_description === null && event.artists[0] !== undefined">
         {{ event.artists[0].configuration.short_description }}
       </p>
-
       <a :href="event.url" class="btn btn-outline-primary btn-sm">Réserver</a>
-
+      <div>
+        <!-- catégorie -->
+        <span v-for="(item, index) in event.tag" :key="index" class="badge rounded-pill choices-dark me-2"
+              @click="addToSearch('categorie', event.categorie)" role="button">
+        {{ event.categorie }}
+      </span>
+        <!-- tags -->
+        <span v-for="(item, index) in event.tag" :key="index" class="badge rounded-pill choices-dark me-2"
+              @click="addToSearch('tag', item)" role="button">
+        {{ item.name }}
+        </span>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script setup>
+import { emitEvent } from '@/communs/EmitEvent.js'
 
 // asset
 const img = import('../../src/assets/img/loading.svg')
@@ -64,10 +59,20 @@ const props = defineProps({
   event: Object
 })
 
-
-function formateDate(dateString) {
+function formateDate (dateString) {
   const date = new Date(dateString)
   return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`
+}
+
+// envoie un message "ElementToSearch" + données tag ou catégorie.
+function addToSearch (typeElement, value) {
+  if (typeElement === 'tag') {
+    value = JSON.parse(JSON.stringify(value))
+    value.type = 'tag'
+  } else {
+    value = { type: 'categorie', name: value }
+  }
+  emitEvent('ElementToSearch', value)
 }
 </script>
 
