@@ -32,8 +32,8 @@
       <a :href="event.url" class="btn btn-outline-primary btn-sm">Réserver</a>
       <div>
         <!-- catégorie -->
-        <span v-for="(item, index) in event.tag" :key="index" class="badge rounded-pill choices-dark me-2"
-              @click="addToSearch('categorie', event.categorie)" role="button">
+        <span class="badge rounded-pill choices-dark me-2" @click="addToSearch('categorie', event.categorie)"
+              role="button">
         {{ event.categorie }}
       </span>
         <!-- tags -->
