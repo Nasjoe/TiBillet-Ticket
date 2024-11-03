@@ -1,0 +1,41 @@
+{% extends base_template %}
+{% load tibitags i18n static %}
+
+{% block main %}
+    {% comment %} manages the "embed" mode {% endcomment %}
+    {% include "htmx/header_groupe.html" %}
+    <div class="container">
+        <h1>Liste des Actions</h1>
+        <ul>
+            {% for action in actions %}
+                <li>{{ action.name }}
+                    <ul class="votes">
+                        <strong>Votes: {{ action.votes.count }}</strong>
+                    </ul>
+                    <ul class="participants">
+                        <strong>Participants:</strong>
+                        <span>{{ action.participations.count }}</span>
+                    </ul>
+                    <ul class="funding">
+                        <strong>Besoins :</strong>
+                        <ul>
+                            {% with action.funding_needs.first as need %}
+                                <li>EUR : {{ need.funded_amount }} / {{ need.target }} <button>Je finance</button></li>
+                                <li>TEMPS : 0 / 4h <button>Je participe</button></li>
+                            {% endwith %}
+                        </ul>
+                    </ul>
+                    <ul class="children">
+                        <strong>Sous actions :</strong>
+                        <ul>
+                            {% for child in action.children.all %}
+                                <li>{{ child.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+{% endblock %}

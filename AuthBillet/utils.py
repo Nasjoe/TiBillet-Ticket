@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db import connection
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
+from django_tenants.postgresql_backend.base import FakeTenant
 from rest_framework import permissions
 from rest_framework_api_key.models import APIKey, AbstractAPIKey
 from rest_framework_api_key.permissions import BaseHasAPIKey, KeyParser
@@ -104,8 +105,9 @@ def get_or_create_user(email: str,
             user.set_password(password)
 
         user.is_active = bool(set_active)
-        user.client_achat.add(connection.tenant)
-        user.client_source = connection.tenant
+        if type(connection.tenant) != FakeTenant:
+            user.client_achat.add(connection.tenant)
+            user.client_source = connection.tenant
         user.save()
 
         if bool(send_mail):

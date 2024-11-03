@@ -1,8 +1,11 @@
+from uuid import uuid4
+
 from django.conf import settings
 from django.core.cache import cache
 from django.db import models
 from django_tenants.utils import schema_context
 from solo.models import SingletonModel
+from django.utils.translation import gettext_lazy as _
 
 from fedow_connect.utils import fernet_decrypt, fernet_encrypt
 from root_billet.models import RootConfiguration
@@ -12,12 +15,12 @@ class FedowConfig(SingletonModel):
     fedow_place_uuid = models.UUIDField(blank=True, null=True, editable=False)
     fedow_place_admin_apikey = models.CharField(max_length=200, blank=True, null=True, editable=False)
 
-    wallet = models.ForeignKey('AuthBillet.Wallet', on_delete=models.CASCADE, blank=True, null=True, related_name='place')
+    wallet = models.ForeignKey('AuthBillet.Wallet', on_delete=models.CASCADE, blank=True, null=True,
+                               related_name='place')
     fedow_place_wallet_uuid = models.UUIDField(blank=True, null=True, editable=False)
 
     # TODO, a retirer, ça passe direct
     # json_key_to_cashless = models.CharField(max_length=500, editable=False, blank=True, null=True)
-
 
     def set_fedow_place_admin_apikey(self, string):
         self.fedow_place_admin_apikey = fernet_encrypt(string)
@@ -50,6 +53,36 @@ class FedowConfig(SingletonModel):
     def can_fedow(self):
         if all([self.fedow_place_uuid,
                 self.fedow_place_admin_apikey,
-                self.fedow_place_wallet_uuid ]):
+                self.fedow_place_wallet_uuid]):
             return True
         return False
+
+
+class AssetFromFedow(models.Model):
+    # One asset per currency
+    uuid = models.UUIDField(primary_key=True, editable=False, db_index=False, default=uuid4)
+    name = models.CharField(max_length=100, unique=True)
+    currency_code = models.CharField(max_length=3)
+
+    STRIPE_FED_FIAT = 'FED'
+    TOKEN_LOCAL_FIAT = 'TLF'
+    TOKEN_LOCAL_NOT_FIAT = 'TNF'
+    TIME = 'TIM'
+    FIDELITY = 'FID'
+    BADGE = 'BDG'
+    SUBSCRIPTION = 'SUB'
+
+    CATEGORIES = [
+        (TOKEN_LOCAL_FIAT, _('Fiduciaire')),
+        (TOKEN_LOCAL_NOT_FIAT, _('Cadeau')),
+        (STRIPE_FED_FIAT, _('Fiduciaire fédérée')),
+        (TIME, _("Monnaie temps")),
+        (FIDELITY, _("Points de fidélité")),
+        (BADGE, _("Badgeuse/Pointeuse")),
+        (SUBSCRIPTION, _('Adhésion ou abonnement')),
+    ]
+
+    category = models.CharField(
+        max_length=3,
+        choices=CATEGORIES
+    )

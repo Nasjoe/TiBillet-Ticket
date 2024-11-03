@@ -126,6 +126,8 @@ TENANT_APPS = (
     'wsocket',
     'tibrss',
     'fedow_connect',
+    'actions',
+
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
