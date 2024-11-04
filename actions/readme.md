@@ -28,6 +28,12 @@
     - [ ] Virement vers compte Stripe des contributeurs
     - [ ] Vérification de la légalité de la structure contributrice
 
+- OpenBadge
+  - [ ] Filter les actions par niveau de savoir faire / OpenBadge requis
+  - [ ] S'inscrire à une action si OpenBadge acquis
+  - [ ] Générer des OpenBadge en fonction des réussites des actions
+  - [ ] Liste, import & export de ses OpenBadge
+  
 - Signature de contrat
   - [ ] Gestion de fichier pour facturation / devis / feuille de mission
   - [ ] Interop DocuSeal pour contrat de bénévolat / volontariat / feuille de mission / devis
