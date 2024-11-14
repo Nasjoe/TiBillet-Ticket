@@ -7,7 +7,7 @@
   - [x] Une action peut être enfant d'une autre action
   - [x] Possibilité de voter pour prioriser
   - [ ] peut filtrer par qty de vote
-  - [ ] Une action peut être liée a un évènement LesPass
+  - [ ] Une action peut être liée à un évènement LesPass
 
 - Crowdfunding : Financement des actions
   - [x] Chaque sous action possède sa propre jauge de financement
